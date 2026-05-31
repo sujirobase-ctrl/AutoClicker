@@ -1,3 +1,5 @@
+name: Build AutoClicker2
+
 on:
   push:
     branches: [ master ]
@@ -13,6 +15,10 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
 
       - uses: NuGet/setup-nuget@v2
+
+      - name: Install .NET Framework 4.0 Targeting Pack
+        run: choco install netfx-4.0.3-devpack -y
+        shell: pwsh
 
       - run: nuget restore AutoClicker2.sln
 
