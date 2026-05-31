@@ -1,44 +1,4 @@
-name: Build AutoClicker2
-
-on:
-  push:
-    branches: [ master ]
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: microsoft/setup-msbuild@v2
-
-      - uses: NuGet/setup-nuget@v2
-
-      - run: nuget restore AutoClicker2.sln
-
-      - name: Build (Release)
+- name: Diagnostico frameworks
         run: |
-          msbuild AutoClicker2.sln `
-            /p:Configuration=Release `
-            /p:Platform="Any CPU" `
-            /p:TargetFrameworkVersion=v4.5
+          ls "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\"
         shell: pwsh
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: AutoClicker2-Release
-          path: |
-            AutoClicker2/bin/Release/
-            AutoClicker2Ex/bin/Release/
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: build-${{ github.run_number }}
-          name: "Build #${{ github.run_number }}"
-          files: |
-            AutoClicker2/bin/Release/*.exe
-            AutoClicker2Ex/bin/Release/*.exe
-          generate_release_notes: true
